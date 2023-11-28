@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 public class MainServlet extends HttpServlet {
 
     private PostController controller;
+    private static final String GET_METHOD = "GET";
+    private static final String POST_METHOD = "POST";
+    private static final String DELETE_METHOD = "DELETE";
 
     @Override
     public void init() {
@@ -27,7 +30,6 @@ public class MainServlet extends HttpServlet {
             final var path = req.getRequestURI();
             final var method = req.getMethod();
 
-            String GET_METHOD = "GET";
             if (method.equals(GET_METHOD) && path.equals("/api/posts")) {
                 controller.all(resp);
                 return;
@@ -38,12 +40,12 @@ public class MainServlet extends HttpServlet {
                 controller.getById(id, resp);
                 return;
             }
-            String POST_METHOD = "POST";
+
             if (method.equals(POST_METHOD) && path.equals("/api/posts")) {
                 controller.save(req.getReader(), resp);
                 return;
             }
-            String DELETE_METHOD = "DELETE";
+
             if (method.equals(DELETE_METHOD) && path.matches("/api/posts/\\d+")) {
                 // easy way
                 final var id = parseId(path);
